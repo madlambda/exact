@@ -25,7 +25,6 @@ func assertAlmost(t *testing.T, x, y, ε float64, msg string) {
 }
 
 func TestFracSqrtAgainstFloat(t *testing.T) {
-	t.SkipNow()
 	for i := uint64(0); i < 10000; i++ {
 		fp := float64(i)
 		frac := exact.NewFrac(i, 1, false)
@@ -46,6 +45,7 @@ func BenchmarkExactSqrt2(b *testing.B) {
 }
 
 func BenchmarkMathSqrt2(b *testing.B) {
+	// unfair comparison, but nice to see the difference
 	for n := 0; n < b.N; n++ {
 		math.Sqrt(2.0)
 	}

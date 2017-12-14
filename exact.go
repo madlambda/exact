@@ -27,7 +27,8 @@ func One() Frac { return NewFrac2(one, one, false) }
 // Zero is the empty.
 func Zero() Frac { return NewFrac2(zero, one, false) }
 
-// NewFrac creates a new fraction.
+// NewFrac creates a new fraction using p and q as numerator and
+// denominator, respectively. Sign tells if it's a negative fraction.
 func NewFrac(p, q uint64, sign bool) Frac {
 	return Frac{
 		Sign: sign,
@@ -36,6 +37,8 @@ func NewFrac(p, q uint64, sign bool) Frac {
 	}
 }
 
+// NewFrac2 creates a new fraction in the same way as NewFrac
+// but using big.Int as numerator and denominator.
 func NewFrac2(p, q *big.Int, sign bool) Frac {
 	return Frac{
 		Sign: sign,
@@ -94,6 +97,7 @@ func max(a, b *big.Int) *big.Int {
 
 // Sub subtract the rational numbers a and b.
 func Sub(a, b Frac) Frac {
+	// a - b = a + (-b)
 	b.Sign = !b.Sign
 	return Add(a, b)
 }
@@ -114,6 +118,9 @@ func Div(a, b Frac) Frac {
 	if b.P.Cmp(zero) == 0 || b.Q.Cmp(zero) == 0 {
 		panic("division by zero")
 	}
+	// a = p/q
+	// b = p'/q'
+	// a/b = (p/q)/(p'/q') = (p/q)*(q'/p')
 	return Mul(a, Frac{
 		Sign: a.Sign && b.Sign,
 		P:    b.Q,
