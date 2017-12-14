@@ -25,7 +25,7 @@ func assertAlmost(t *testing.T, x, y, ε float64, msg string) {
 }
 
 func TestFracSqrtAgainstFloat(t *testing.T) {
-	for i := uint64(0); i < 10000; i++ {
+	for i := uint64(0); i < 1000; i++ {
 		fp := float64(i)
 		frac := exact.NewFrac(i, 1, false)
 
@@ -34,6 +34,7 @@ func TestFracSqrtAgainstFloat(t *testing.T) {
 
 		assertAlmost(t, sfp, sf.Inexact(),
 			exact.SqrtPrec.Inexact(), fmt("sqrt(%d)", i))
+		//t.Logf("sqrt(%d) = %s", i, sf.Simplify())
 	}
 }
 
