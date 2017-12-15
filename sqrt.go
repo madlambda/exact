@@ -1,40 +1,38 @@
 package exact
 
-import (
-	"math/big"
-)
-
-var SqrtPrec Frac
-
-func init() {
-	var prec, _, _ = big.NewFloat(0).Parse("1.0e100", 10)
-	z := big.NewInt(0)
-	prec.Int(z)
-	SqrtPrec = NewFrac2(big.NewInt(1), z, false)
+// Sqrt computes the square root of x.
+// The precision is DefPrecision.
+// To use arbitrary precision, see Sqrtp.
+// Note: this function is orders of magnitude slow than math.Sqrt,
+// but the result can be made as precise as you wish by using
+// Sqrtp.
+func Sqrt(x Frac) Frac {
+	return Sqrtp(x, DefPrecision)
 }
 
-// Sqrt computes the square root of a.
-// Note: slow, use with caution.
-// TODO: make iterative
-func Sqrt(x Frac) (ret Frac) {
+// Sqrtp computes the square root of x using precision prec.
+// Note: Depending on the value of prec, this function can
+// take hours, days, years, a life time, ..., to complete.
+func Sqrtp(x, prec Frac) Frac {
 	if x.P.Cmp(zero) == 0 {
 		return Zero()
 	}
 
 	g := One() // first guess
 
-	for !closeEnough(Div(x, g), g) {
+	for !closeEnough(Div(x, g), g, prec) {
 		g = betterGuess(x, g)
 	}
 
 	return g
 }
 
+// make g = (g+(x/g))/2
 func betterGuess(x, g Frac) Frac {
 	return Mul(Add(g, Div(x, g)), NewFrac(1, 2, false))
 }
 
-func closeEnough(a, b Frac) bool {
-	// abs(a-b) < precision
-	return Lt(Abs(Sub(a, b)), SqrtPrec)
+// abs(a-b) < precision
+func closeEnough(a, b, prec Frac) bool {
+	return Lt(Abs(Sub(a, b)), prec)
 }

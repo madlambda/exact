@@ -19,7 +19,18 @@ type (
 var (
 	zero = big.NewInt(0)
 	one  = big.NewInt(1)
+
+	// DefPrecision is the default precision used when
+	// the function does not specify one.
+	DefPrecision Frac
 )
+
+func init() {
+	var prec, _, _ = big.NewFloat(0).Parse("1.0e100", 10)
+	z := big.NewInt(0)
+	prec.Int(z)
+	DefPrecision = NewFrac2(big.NewInt(1), z, false)
+}
 
 // One is the whole.
 func One() Frac { return NewFrac2(one, one, false) }
@@ -40,11 +51,19 @@ func NewFrac(p, q uint64, sign bool) Frac {
 // NewFrac2 creates a new fraction in the same way as NewFrac
 // but using big.Int as numerator and denominator.
 func NewFrac2(p, q *big.Int, sign bool) Frac {
+	if q.Cmp(zero) == 0 {
+		panic("division by zero")
+	}
 	return Frac{
 		Sign: sign,
 		P:    p,
 		Q:    q,
 	}
+}
+
+// IsZero tells if f is zero
+func (f Frac) IsZero() bool {
+	return f.P.Cmp(zero) == 0
 }
 
 // add but ignores sign

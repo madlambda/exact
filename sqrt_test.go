@@ -33,8 +33,7 @@ func TestFracSqrtAgainstFloat(t *testing.T) {
 		sf := exact.Sqrt(frac)
 
 		assertAlmost(t, sfp, sf.Inexact(),
-			exact.SqrtPrec.Inexact(), fmt("sqrt(%d)", i))
-		//t.Logf("sqrt(%d) = %s", i, sf.Simplify())
+			exact.DefPrecision.Inexact(), fmt("sqrt(%d)", i))
 	}
 }
 
