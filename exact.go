@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	// Rat is a fraction
+	// Rat is a rational number
 	Rat struct {
 		Sign bool
 		P    *big.Int // P is the numerator
