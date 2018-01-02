@@ -14,39 +14,37 @@ func newInt(t string) *big.Int {
 }
 
 var (
-	sqrt11_3 = exact.NewFrac2(
+	sqrt11_3 = exact.NewBigRat(
 		newInt(
 			"8907430012405601974227841812502266124751907164389458124457923971110416952138563811933935901308162252289",
 		),
 		newInt(
 			"4651753611446999121325528753135336086170729864116047599840048338398572005441776052283614001901065410989",
 		),
-		false,
 	)
 
-	sqrt10_3 = exact.NewFrac2(
+	sqrt10_3 = exact.NewBigRat(
 		newInt(
 			"182140598762941461355069160591888526271635523676933716216619188883432692646610141830040815824221130179601964717075465433643881983192710343327452700070368556752347372334044277761",
 		),
 		newInt(
 			"99762514579960592434515661886422227213820543479328130216353111486818126195968731365445978030596906270110314538555708556984066735218679109730815587464861598957360538800363906816",
 		),
-		false,
 	)
 )
 
 var fmt = format.Sprintf
 var testcases = []struct {
-	a, b, sum, sub, mul, div exact.Frac
-	sqrtA, sqrtB             exact.Frac
+	a, b, sum, sub, mul, div exact.Rat
+	sqrtA, sqrtB             exact.Rat
 	lt, gt                   bool
-	abs                      exact.Frac
+	abs                      exact.Rat
 }{
 	{
 		a:     exact.One(),
 		b:     exact.One(),
-		sum:   exact.NewFrac(2, 1, false),
-		sub:   exact.NewFrac(0, 1, false),
+		sum:   exact.NewRat(2, 1),
+		sub:   exact.NewRat(0, 1),
 		div:   exact.One(),
 		mul:   exact.One(),
 		sqrtA: exact.One(),
@@ -54,95 +52,91 @@ var testcases = []struct {
 		lt:    false,
 	},
 	{
-		a: exact.NewFrac(1, 2, false),
-		b: exact.NewFrac(1, 2, false),
-		sqrtA: exact.NewFrac2(
+		a: exact.NewRat(1, 2),
+		b: exact.NewRat(1, 2),
+		sqrtA: exact.NewBigRat(
 			newInt(
 				"48926646634423881954586808839856694558492182258668537145547700898547222910968507268117381704646657",
 			),
 			newInt(
 				"69192727231838199530637090778029723034779720143976685296374209532493131389050939536650584353662464",
 			),
-			false,
 		),
-		sqrtB: exact.NewFrac2(
+		sqrtB: exact.NewBigRat(
 			newInt(
 				"48926646634423881954586808839856694558492182258668537145547700898547222910968507268117381704646657",
 			),
 			newInt(
 				"69192727231838199530637090778029723034779720143976685296374209532493131389050939536650584353662464",
 			),
-			false,
 		),
-		sum: exact.NewFrac(1, 1, false),
-		sub: exact.NewFrac(0, 1, false),
-		div: exact.NewFrac(1, 1, false),
-		mul: exact.NewFrac(1, 4, false),
+		sum: exact.NewRat(1, 1),
+		sub: exact.NewRat(0, 1),
+		div: exact.NewRat(1, 1),
+		mul: exact.NewRat(1, 4),
 		lt:  false,
 	},
 	{
-		a: exact.NewFrac(10, 2, false),
-		b: exact.NewFrac(15, 3, false),
-		sqrtA: exact.NewFrac2(
+		a: exact.NewRat(10, 2),
+		b: exact.NewRat(15, 3),
+		sqrtA: exact.NewBigRat(
 			newInt(
 				"316837008400094222150776738483768236006420971486980607",
 			),
 			newInt(
 				"141693817714056513234709965875411919657707794958199867",
 			),
-			false,
 		),
-		sqrtB: exact.NewFrac2(
+		sqrtB: exact.NewBigRat(
 			newInt(
 				"316837008400094222150776738483768236006420971486980607",
 			),
 			newInt(
 				"141693817714056513234709965875411919657707794958199867",
 			),
-			false,
 		),
-		sum: exact.NewFrac(10, 1, false),
-		sub: exact.NewFrac(0, 1, false),
-		div: exact.NewFrac(1, 1, false),
-		mul: exact.NewFrac(25, 1, false),
+		sum: exact.NewRat(10, 1),
+		sub: exact.NewRat(0, 1),
+		div: exact.NewRat(1, 1),
+		mul: exact.NewRat(25, 1),
 		lt:  false,
 	},
 	{
-		a:     exact.NewFrac(11, 3, false),
-		b:     exact.NewFrac(10, 3, false),
+		a:     exact.NewRat(11, 3),
+		b:     exact.NewRat(10, 3),
 		sqrtA: sqrt11_3,
 		sqrtB: sqrt10_3,
-		sum:   exact.NewFrac(21, 3, false),
-		sub:   exact.NewFrac(1, 3, false),
-		div:   exact.NewFrac(11, 10, false),
-		mul:   exact.NewFrac(110, 9, false),
+		sum:   exact.NewRat(21, 3),
+		sub:   exact.NewRat(1, 3),
+		div:   exact.NewRat(11, 10),
+		mul:   exact.NewRat(110, 9),
 		lt:    false,
 	},
 	{
-		a:     exact.NewFrac(10, 3, false),
-		b:     exact.NewFrac(11, 3, false),
+		a:     exact.NewRat(10, 3),
+		b:     exact.NewRat(11, 3),
 		sqrtA: sqrt10_3,
 		sqrtB: sqrt11_3,
-		sum:   exact.NewFrac(21, 3, false),
-		sub:   exact.NewFrac(1, 3, true),
-		div:   exact.NewFrac(10, 11, false),
-		mul:   exact.NewFrac(110, 9, false),
+		sum:   exact.NewRat(21, 3),
+		sub:   exact.NewNegRat(1, 3),
+		div:   exact.NewRat(10, 11),
+		mul:   exact.NewRat(110, 9),
 		lt:    true,
 	},
 	{
-		a:     exact.NewFrac(10, 3, true),
-		b:     exact.NewFrac(11, 3, false),
+		a:     exact.NewNegRat(10, 3),
+		b:     exact.NewRat(11, 3),
 		sqrtA: sqrt10_3,
 		sqrtB: sqrt11_3,
-		sum:   exact.NewFrac(1, 3, false),
-		sub:   exact.NewFrac(21, 3, true),
-		div:   exact.NewFrac(10, 11, true),
-		mul:   exact.NewFrac(110, 9, true),
+		sum:   exact.NewRat(1, 3),
+		sub:   exact.NewNegRat(21, 3),
+		div:   exact.NewNegRat(10, 11),
+		mul:   exact.NewNegRat(110, 9),
 		lt:    true,
 	},
 }
 
-func assertEqual(t *testing.T, a, b exact.Frac) {
+func assertEqual(t *testing.T, a, b exact.Rat) {
 	if !exact.Cmp(a, b) {
 		t.Fatalf("fail: %s != %s", a, b)
 	}

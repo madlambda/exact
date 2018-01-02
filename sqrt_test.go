@@ -24,10 +24,10 @@ func assertAlmost(t *testing.T, x, y, ε float64, msg string) {
 		msg, x, y))
 }
 
-func TestFracSqrtAgainstFloat(t *testing.T) {
+func TestRatSqrtAgainstFloat(t *testing.T) {
 	for i := uint64(0); i < 1000; i++ {
 		fp := float64(i)
-		frac := exact.NewFrac(i, 1, false)
+		frac := exact.NewRat(i, 1)
 
 		sfp := math.Sqrt(fp)
 		sf := exact.Sqrt(frac)
@@ -38,7 +38,7 @@ func TestFracSqrtAgainstFloat(t *testing.T) {
 }
 
 func BenchmarkExactSqrt2(b *testing.B) {
-	two := exact.NewFrac(2, 1, false)
+	two := exact.NewRat(2, 1)
 	for n := 0; n < b.N; n++ {
 		exact.Sqrt(two)
 	}

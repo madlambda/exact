@@ -8,17 +8,17 @@ import (
 )
 
 func ExampleArith() {
-	f1 := exact.NewFrac(2207, 987, false)
-	f2 := exact.NewFrac(15, 3, false)
+	f1 := exact.NewRat(2207, 987)
+	f2 := exact.NewRat(15, 3)
 
 	// r = (2207/987)+((2207/987)/(15/3))*(1/2)
-	r := exact.Mul(exact.Add(f1, exact.Div(f2, f1)), exact.NewFrac(1, 2, false))
+	r := exact.Mul(exact.Add(f1, exact.Div(f2, f1)), exact.NewRat(1, 2))
 	format.Printf("%s", r.Simplify())
 	// Output: 4870847/2178309
 }
 
 func ExampleSqrt() {
-	sqrt2 := exact.Sqrt(exact.NewFrac(2, 1, false))
+	sqrt2 := exact.Sqrt(exact.NewRat(2, 1))
 	sqrtStr := big.NewRat(1, 1).SetFrac(sqrt2.P, sqrt2.Q).FloatString(200)
 	format.Printf("rational: %s\ndecimal: %s\n", sqrt2, sqrtStr)
 	// Output: rational: 48926646634423881954586808839856694558492182258668537145547700898547222910968507268117381704646657/34596363615919099765318545389014861517389860071988342648187104766246565694525469768325292176831232
